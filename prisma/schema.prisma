@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ユーザー基本情報
+model User {
+  id                    String @id @default(cuid())
+  name                  String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  profile               UserProfile?
+  goals                 Goal[]
+  goalSnapshots         GoalSnapshot[]
+  portfolioHoldings     PortfolioHolding[]
+  assetSnapshots        AssetSnapshot[]
+  assetAllocationHistories AssetAllocationHistory[]
+  cashflows             Cashflow[]
+  wealthProjections     WealthProjection[]
+  whatIfScenarios       WhatIfScenario[]
+  dailyReports          DailyReport[]
+}
+
+// ユーザープロフィール（Goal-Based Wealth OS用ユーザー属性）
+model UserProfile {
+  id                    String @id @default(cuid())
+  userId                String @unique
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  birthDate             DateTime?
+  currentAge            Int
+  currentAsset          Float  // 現在総資産（JPY）
+  riskTolerance         String @default("MODERATE")  // LOW, MODERATE, HIGH
+  investmentHorizon     Int @default(20)  // 投資期間（年）
+  maritalStatus         String?
+  annualIncome          Float?
+  annualExpenses        Float?
+  companyOwner          Boolean @default(false)
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// 人生目標
+model Goal {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  targetAge             Int
+  targetAsset           Float  // 目標資産（JPY）
+  projectedAsset        Float?  // 目標年齢時点での予測資産（JPY）
+
+  // 計算結果（キャッシュ）
+  achievementRate       Float?  // 達成率（%）
+  remainingAmount       Float?  // 残必要資産（JPY）
+  requiredReturn        Float?  // 必要利回り（%）
+  successProbability    Float?  // 達成確率（%）
+
+  snapshots             GoalSnapshot[]
+  coachReports          GoalCoachReport[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([userId, targetAge])
+}
+
+// 目標達成率のスナップショット（履歴追跡）
+model GoalSnapshot {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goalId                String
+  goal                  Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  date                  DateTime
+  currentAsset          Float  // その日の総資産
+  achievementRate       Float  // その日の達成率（%）
+  successProbability    Float  // その日の達成確率（%）
+  expectedAsset         Float?  // 期待値（JPY）
+  requiredReturn        Float?  // 必要利回り（%）
+
+  createdAt             DateTime @default(now())
+
+  @@unique([goalId, date])
+}
+
+// ポートフォリオ保有資産
+model PortfolioHolding {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  ticker                String
+  name                  String
+  quantity              Float
+  purchasePrice         Float?
+  assetClass            String  // CRYPTO, STOCK_US, STOCK_JP, COMMODITY, CASH, BOND, REIT
+  priceSource           String  // COINGECKO, YAHOO_USD, YAHOO_JPY, MANUAL_JPY
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([userId, ticker])
+}
+
+// 日次資産スナップショット
+model AssetSnapshot {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date                  DateTime
+  totalAssetJpy         Float
+  holdingsJson          String  // JSON形式で保持内訳
+
+  createdAt             DateTime @default(now())
+
+  @@unique([userId, date])
+}
+
+// 資産配分の履歴（ポートフォリオ構成の推移）
+model AssetAllocationHistory {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date                  DateTime
+  btcPercent            Float @default(0)
+  nasdaqPercent         Float @default(0)
+  sp500Percent          Float @default(0)
+  acwiPercent           Float @default(0)
+  goldPercent           Float @default(0)
+  reitPercent           Float @default(0)
+  bondPercent           Float @default(0)
+  cashPercent           Float @default(0)
+  otherPercent          Float @default(0)
+
+  totalAssetJpy         Float?
+
+  createdAt             DateTime @default(now())
+
+  @@unique([userId, date])
+}
+
+// キャッシュフロー分析
+model Cashflow {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  year                  Int
+  corporateProfit       Float?  // 法人利益
+  executiveComp         Float?  // 役員報酬
+  otherIncome           Float?  // その他収入
+  livingExpense         Float?  // 生活費
+  fixedExpense          Float?  // 固定費
+
+  // 計算結果
+  annualAddableInvestment Float?  // 年間追加投資可能額
+  monthlyAddableInvestment Float?  // 月間追加投資可能額
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([userId, year])
+}
+
+// 将来資産予測
+model WealthProjection {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  calculationDate       DateTime
+  targetAge             Int
+  expectedAsset         Float  // 予測資産（JPY）
+  expectedReturn        Float?  // 期待利回り（%）
+  scenarioName          String @default("BASE")  // BASE, OPTIMISTIC, PESSIMISTIC
+  assumptions           String?  // JSON形式で仮定を保存
+
+  createdAt             DateTime @default(now())
+
+  @@unique([userId, calculationDate, targetAge, scenarioName])
+}
+
+// What Ifシミュレーション
+model WhatIfScenario {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name                  String
+  annualInvestment      Float
+  btcWeight             Float @default(0)
+  nasdaqWeight          Float @default(0)
+  sp500Weight           Float @default(0)
+  goldWeight            Float @default(0)
+  cashWeight            Float @default(0)
+
+  expectedReturn        Float?
+  maxDrawdown           Float?
+  targetAge             Int?
+  expectedAsset         Float?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// 市場データ（キャッシュ）
+model MarketData {
+  id                    String @id @default(cuid())
+
+  date                  DateTime @unique
+  riskScore             Float?  // 0-100
+  crashRiskScore        Float?  // 0-100
+  marketRegime          String?  // "Risk On", "Neutral", "Risk Off"
+  vixLevel              Float?
+
+  createdAt             DateTime @default(now())
+}
+
+// 日次レポート
+model DailyReport {
+  id                    String @id @default(cuid())
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date                  DateTime
+  content               String
+  riskScore             Int?
+  totalAssetJpy         Float?
+
+  createdAt             DateTime @default(now())
+
+  @@unique([userId, date])
+}
+
+// AI朝レポート（Phase1からの既存）
+model MorningReport {
+  id                    String @id @default(cuid())
+  date                  DateTime @unique
+  content               String
+  marketScore           Int
+  totalValueJpy         Float
+  createdAt             DateTime @default(now())
+}
+
+// Goal Coach レポート（毎日の目標達成支援レポート）
+model GoalCoachReport {
+  id                    String @id @default(cuid())
+  goalId                String
+  goal                  Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  createdDate           DateTime  // レポートが生成された日付（UTC midnight）
+  content               String    // Claude AI生成レポート
+  successProbability    Float     // その日の達成確率
+  probabilityChange     Float     // 前日比
+  emotionalTone         String    // "positive" | "neutral" | "alert"
+  recommendation        String    // 推奨アクション
+
+  createdAt             DateTime @default(now())
+
+  @@unique([goalId, createdDate])
+}
+
+// Phase 1: シンプルな保有資産管理（Phase1との互換性維持）
+model Holding {
+  id                    String @id @default(cuid())
+  ticker                String
+  name                  String
+  quantity              Float
+  purchasePrice         Float?
+  priceSource           String
+  assetClass            String @default("OTHER")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// Phase 1: ポートフォリオスナップショット（互換性維持）
+model PortfolioSnapshot {
+  id                    String @id @default(cuid())
+  date                  DateTime @unique
+  totalValueJpy         Float
+  holdingsJson          String
+  createdAt             DateTime @default(now())
+}
