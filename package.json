@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "generate-vapid": "node -e \"const wp=require('web-push'); const keys=wp.generateVAPIDKeys(); console.log(JSON.stringify(keys,null,2))\""
   },
