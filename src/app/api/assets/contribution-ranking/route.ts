@@ -44,12 +44,12 @@ export async function GET(req: NextRequest) {
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
 
     // 月間（過去30日）
-    const monthlySnapshots = snapshots.filter((s) => new Date(s.date) > thirtyDaysAgo)
+    const monthlySnapshots = snapshots.filter((s: typeof snapshots[0]) => new Date(s.date) > thirtyDaysAgo)
     const monthlyGrowth = calculateGrowthFromSnapshots(monthlySnapshots)
     const monthlyRanking = calculateContributionRanking(monthlyGrowth, 'monthly')
 
     // 年間（過去365日）
-    const yearlySnapshots = snapshots.filter((s) => new Date(s.date) > oneYearAgo)
+    const yearlySnapshots = snapshots.filter((s: typeof snapshots[0]) => new Date(s.date) > oneYearAgo)
     const yearlyGrowth = calculateGrowthFromSnapshots(yearlySnapshots)
     const yearlyRanking = calculateContributionRanking(yearlyGrowth, 'yearly')
 
