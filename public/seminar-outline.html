@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>物販ビジネスセミナー</title>
+    <title>セミナー各項目の概要</title>
     <style>
         * {
             margin: 0;
@@ -25,17 +25,17 @@
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 20px 30px;
+            margin-bottom: 24px;
+            padding: 28px 20px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
+            border-radius: 14px;
             color: white;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 26px;
+            margin-bottom: 0;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
@@ -43,25 +43,25 @@
         .accordion {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
         }
 
         .accordion-item {
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             background: white;
             transition: all 0.3s ease;
             border: 1px solid #e8ecf1;
         }
 
         .accordion-item:hover {
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.12);
+            box-shadow: 0 3px 16px rgba(33, 150, 243, 0.12);
         }
 
         .accordion-header {
-            padding: 20px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: white;
             font-weight: 700;
             cursor: pointer;
@@ -69,7 +69,7 @@
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .accordion-header:hover {
@@ -85,19 +85,19 @@
 
         .accordion-number {
             background: rgba(255,255,255,0.3);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             flex-shrink: 0;
         }
 
         .accordion-toggle {
-            font-size: 20px;
+            font-size: 16px;
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
@@ -156,44 +156,61 @@
 
         @media (max-width: 480px) {
             .header {
-                padding: 30px 20px 20px;
+                padding: 20px 16px 16px;
+                margin-bottom: 16px;
             }
 
             .header h1 {
-                font-size: 28px;
+                font-size: 22px;
             }
 
             .container {
                 max-width: 100%;
+                padding: 12px;
             }
 
             .accordion {
-                gap: 12px;
+                gap: 8px;
+            }
+
+            .accordion-item {
+                border-radius: 10px;
             }
 
             .accordion-header {
-                padding: 18px 20px;
-                font-size: 15px;
+                padding: 12px 14px;
+                font-size: 14px;
             }
 
             .accordion-header-title {
-                gap: 12px;
+                gap: 10px;
             }
 
             .accordion-number {
-                width: 32px;
-                height: 32px;
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            .accordion-toggle {
                 font-size: 14px;
             }
 
             .accordion-content.active {
-                padding: 20px;
+                padding: 14px;
+                max-height: 500px;
             }
 
             .accordion-content li {
-                font-size: 14px;
-                padding: 10px 0;
-                padding-left: 24px;
+                font-size: 13px;
+                padding: 8px 0;
+                padding-left: 20px;
+            }
+
+            .footer {
+                margin-top: 30px;
+                padding: 20px 16px;
+                font-size: 12px;
             }
         }
     </style>
@@ -201,7 +218,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>物販ビジネスセミナー</h1>
+            <h1>セミナー各項目の概要</h1>
         </div>
 
         <div class="accordion" id="accordion">
