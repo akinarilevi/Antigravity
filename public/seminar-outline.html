@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物販ビジネスセミナー</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: #f8fafb;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .accordion-item {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            background: white;
+            transition: all 0.3s ease;
+            border: 1px solid #e8ecf1;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.12);
+        }
+
+        .accordion-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .accordion-header:hover {
+            transform: translateX(4px);
+        }
+
+        .accordion-header-title {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .accordion-number {
+            background: rgba(255,255,255,0.3);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .accordion-toggle {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .accordion-toggle.active {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .accordion-content.active {
+            max-height: 800px;
+            padding: 24px;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .accordion-content li {
+            padding: 12px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .accordion-content li:before {
+            content: "▸";
+            position: absolute;
+            left: 4px;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px 20px;
+            font-size: 13px;
+            color: #7f8c8d;
+            border-top: 1px solid #e8ecf1;
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 30px 20px 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .accordion {
+                gap: 12px;
+            }
+
+            .accordion-header {
+                padding: 18px 20px;
+                font-size: 15px;
+            }
+
+            .accordion-header-title {
+                gap: 12px;
+            }
+
+            .accordion-number {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .accordion-content.active {
+                padding: 20px;
+            }
+
+            .accordion-content li {
+                font-size: 14px;
+                padding: 10px 0;
+                padding-left: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>物販ビジネスセミナー</h1>
+        </div>
+
+        <div class="accordion" id="accordion">
+            <!-- 項目1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(0)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">①</div>
+                        <span>迫さんから挨拶</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Brainで自己投資を行い、学び続けている参加者の姿勢を肯定する</li>
+                        <li>これまで学んできた知識や経験は、今後成果を出すための土台になっていると伝える</li>
+                        <li>今回のセミナーは、その学びを実際の収益や実績につなげ、ゼロイチを作るためのセミナーだと説明する</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(1)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">②</div>
+                        <span>成果に繋げるための次の一歩</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>AIやコンテンツ販売で成果を出すためにも、元となる実績・経験・種銭が重要だと説明する</li>
+                        <li>まずは自分の力で最初の収益を作る（ゼロイチ）ことが、次のビジネスへ進むための土台になると伝える</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(2)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">③</div>
+                        <span>ゼロイチの最善手は物販と教育</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>自分の商品・実績・フォロワーがない状態でも始めやすいビジネスが必要（それが物販）だと説明する</li>
+                        <li>物販は既存の商品と市場を活用でき、売れ行きや価格をデータで判断できると伝える</li>
+                        <li>さまざまな副業を見てきた迫さんから、ゼロイチの最善手として、物販が最も再現性の高い選択肢の一つだと伝える</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目4 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(3)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">④</div>
+                        <span>迫さんからかずさんを紹介</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>物販を教えている人であれば、誰でもよかったわけではないと伝える</li>
+                        <li>初心者を最初の利益まで支援できる、実績・ノウハウ・データ・環境が必要だったと説明する</li>
+                        <li>その条件を満たす人物として、物販ONEを運営するかずさんを紹介する</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目5 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(4)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑤</div>
+                        <span>かずさん&Brainリストの仲間化</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>かずさんの自己紹介と、迫さんとの過去からの関係性を伝える</li>
+                        <li>かずさんがAI会社を評価額30億円で売却できた背景には、迫さんから会社経営や事業の進め方について受けたアドバイスがあったと伝える</li>
+                        <li>迫さんへの感謝と恩返しとして、迫さんが大切にしているBrainユーザーのゼロイチ達成を支援したいと考え、今回のコラボを決めたと話す</li>
+                        <li>Brainユーザーの自己投資や学習姿勢を肯定し、その姿勢を物販に向ければ、成果を出せる可能性は十分にあると伝える</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目6 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(5)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑥</div>
+                        <span>「なぜ物販なのか」を説明</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>物販は、自分の商品や発信力がなくても、既存の商品と市場を使って始められると説明する</li>
+                        <li>感覚やセンスだけに頼らず、販売価格や需要などのデータを確認しながら取り組めると伝える</li>
+                        <li>物販は利益だけでなく、商売の経験・実績・種銭を作り、次の事業につなげられると説明する</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目7 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(6)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑦</div>
+                        <span>ONE独自のAmazon物販公開</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>物販ONEが7年以上、1億円以上の費用と時間をかけて、コンテンツや環境を開発してきたことを伝える</li>
+                        <li>1,000万件以上の商品データや、月1,000万円以上の利益を出すプロの仕入れノウハウを紹介する</li>
+                        <li>それらのデータ・実績・判断基準を凝縮して独自開発した、Amazon物販ツールを公開する</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目8 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(7)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑧</div>
+                        <span>初心者でも成果を出せる根拠</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>完全初心者、会社員、主婦、40代以上など、参加者と属性が近い方の成功事例を紹介する</li>
+                        <li>独自ツールを使用し、商品検索から販売価格・仕入れ価格・利益計算・仕入れ判断までを実演する</li>
+                        <li>正しい手順・データ・ツール・サポート環境があれば、初心者でも成果を出せると伝える</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目9 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(8)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑨</div>
+                        <span>物販経験をBrainでコンテンツ化</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>物販で最初の利益を作り、月5万円・10万円と収益を伸ばしていく未来を提示する</li>
+                        <li>物販で得た経験・失敗・商品リサーチ方法などが、Brainで販売できるコンテンツになると伝える</li>
+                        <li>「Brainで学ぶ→物販で稼ぐ→得た経験をBrainで価値に変える」という共同プロジェクトの理念を説明する</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 項目10 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(9)">
+                    <div class="accordion-header-title">
+                        <div class="accordion-number">⑩</div>
+                        <span>LINE登録／スタートアップ会へ</span>
+                    </div>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>参加者の資金・使える時間・目標に合わせて、ゼロイチ達成に向けた自分専用のロードマップを一緒に作成する「スタートアップ会」を案内する</li>
+                        <li>スタートアップ会では、最初の30日間で取り組む内容を具体化し、独自Amazonツールの使い方まで説明する</li>
+                        <li>申し込みのために専用LINEへ登録してもらい、参加者にはツールの全機能を利用できるパスワードを渡して、すぐに実践できる状態を作る</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 物販ONE × Brain コラボセミナー</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccordion(index) {
+            const items = document.querySelectorAll('.accordion-item');
+            const item = items[index];
+            const header = item.querySelector('.accordion-header');
+            const content = item.querySelector('.accordion-content');
+            const toggle = item.querySelector('.accordion-toggle');
+
+            // すべてのアイテムを閉じる
+            items.forEach((i, idx) => {
+                if (idx !== index) {
+                    i.querySelector('.accordion-content').classList.remove('active');
+                    i.querySelector('.accordion-header').classList.remove('active');
+                    i.querySelector('.accordion-toggle').classList.remove('active');
+                }
+            });
+
+            // 現在のアイテムを開閉
+            content.classList.toggle('active');
+            header.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
